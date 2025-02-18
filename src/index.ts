@@ -1,12 +1,14 @@
-import { Request, Response } from "express"
-import App from "./server/app"
+import express from "express"
+import morgan from "morgan"
 
-const app = new App().express
+import App from "./shared/server/app"
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("test")
-})
+const app = new App()
 
-app.listen(3000, () => {
-    console.log(`[server]: Server is running at port ${3000}`)
-})
+app.registerMiddleware(express.json())
+app.registerMiddleware(morgan("combined"))
+
+// app.registerRoutes("/api/catalog", )
+
+const PORT = process.env.PORT || 3000
+app.start(PORT)
