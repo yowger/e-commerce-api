@@ -1,10 +1,46 @@
-import express, { Application, RequestHandler, Router } from "express"
+import cors from "cors"
+import express, {
+    Application,
+    NextFunction,
+    Response,
+    Request,
+    RequestHandler,
+    Router,
+} from "express"
+import helmet from "helmet"
+import morgan from "morgan"
 
 class App {
     public express: Application
 
     constructor() {
         this.express = express()
+        this.configureDefaultMiddleware()
+        this.configureDefaultRoutes()
+        this.configureErrorHandling()
+    }
+
+    private configureDefaultMiddleware() {
+        this.express.use(express.json())
+        this.express.use(express.urlencoded({ extended: true }))
+        this.express.use(morgan("combined"))
+        this.express.use(helmet())
+        this.express.use(cors())
+    }
+
+    private configureDefaultRoutes(): void {
+        this.express.get("/health", (req: Request, res: Response) => {
+            res.status(200).send({ status: "OK" })
+        })
+    }
+
+    private configureErrorHandling(): void {
+        this.express.use(
+            (err: Error, req: Request, res: Response, next: NextFunction) => {
+                console.error(err.stack)
+                res.status(500).json({ error: "Something went wrong!" })
+            }
+        )
     }
 
     public registerMiddleware(middleware: RequestHandler): void {

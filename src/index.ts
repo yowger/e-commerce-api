@@ -1,12 +1,7 @@
-import express from "express"
-import morgan from "morgan"
-
-import App from "./shared/server/app"
+import 'module-alias/register'
+import App from "@/shared/server/app"
 
 const app = new App()
-
-app.registerMiddleware(express.json())
-app.registerMiddleware(morgan("combined"))
 
 // app.registerRoutes("/api/catalog", )
 

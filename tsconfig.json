@@ -1,4 +1,7 @@
 {
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    },
     "compilerOptions": {
         "module": "commonjs",
         "esModuleInterop": true,
@@ -9,6 +12,10 @@
         "sourceMap": true,
         "outDir": "./dist",
         "experimentalDecorators": true,
-        "baseUrl": "./src"
-    }
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src/**/*"]
 }
