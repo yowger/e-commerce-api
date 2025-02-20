@@ -18,6 +18,7 @@ class App {
         this.configureDefaultMiddleware()
         this.configureDefaultRoutes()
         this.configureErrorHandling()
+        this.configureNotFoundHandler()
     }
 
     private configureDefaultMiddleware() {
@@ -31,6 +32,12 @@ class App {
     private configureDefaultRoutes(): void {
         this.express.get("/health", (req: Request, res: Response) => {
             res.status(200).send({ status: "OK" })
+        })
+    }
+
+    private configureNotFoundHandler(): void {
+        this.express.use((req: Request, res: Response, next: NextFunction) => {
+            res.status(404).json({ error: "Not Found" })
         })
     }
 
