@@ -15,13 +15,9 @@ class App {
 
     constructor() {
         this.express = express()
-        this.configureDefaultMiddleware()
-        this.configureDefaultRoutes()
-        this.configureErrorHandling()
-        this.configureNotFoundHandler()
     }
 
-    private configureDefaultMiddleware() {
+    public configureDefaultMiddleware(): void {
         this.express.use(express.json())
         this.express.use(express.urlencoded({ extended: true }))
         this.express.use(morgan("combined"))
@@ -29,25 +25,25 @@ class App {
         this.express.use(cors())
     }
 
-    private configureDefaultRoutes(): void {
+    public configureDefaultRoutes(): void {
         this.express.get("/health", (req: Request, res: Response) => {
             res.status(200).send({ status: "OK" })
         })
     }
 
-    private configureNotFoundHandler(): void {
-        this.express.use((req: Request, res: Response, next: NextFunction) => {
-            res.status(404).json({ error: "Not Found" })
-        })
-    }
-
-    private configureErrorHandling(): void {
+    public configureErrorHandling(): void {
         this.express.use(
             (err: Error, req: Request, res: Response, next: NextFunction) => {
                 console.error(err.stack)
                 res.status(500).json({ error: "Something went wrong!" })
             }
         )
+    }
+
+    public configureNotFoundHandler(): void {
+        this.express.use((req: Request, res: Response, next: NextFunction) => {
+            res.status(404).json({ error: "Route Not Found" })
+        })
     }
 
     public registerMiddleware(middleware: RequestHandler): void {
