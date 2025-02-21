@@ -5,7 +5,6 @@ import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemor
 
 export class CreateProductController {
     async handle(req: Request, res: Response): Promise<Response> {
-        console.log("logging routes...")
         const { id, name, description, price, categoryId } = req.body
 
         const ProductRepository = new InMemoryProductRepository()

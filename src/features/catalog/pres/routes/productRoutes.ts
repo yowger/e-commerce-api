@@ -12,10 +12,6 @@ const getProductByIdController = new GetProductByIdController()
 const updateProductController = new UpdateProductController()
 const deleteProductController = new DeleteProductController()
 
-productRouter.get("/", (req, res) => {
-    console.log("nice")
-    res.send("nice")
-})
 productRouter.post(
     "/products",
     createProductController.handle.bind(createProductController)
