@@ -1,18 +1,22 @@
 import { Request, Response } from "express"
+import { inject, injectable } from "inversify"
 
 import { UpdateProductUseCase } from "@/features/catalog/app/useCases/UpdateProductUseCase"
-import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
+import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
 
+@injectable()
 export class UpdateProductController {
+    constructor(
+        @inject(catalogTokens.useCases.CreateProduct)
+        private updateProductUseCase: UpdateProductUseCase
+    ) {}
+
     async handle(request: Request, response: Response): Promise<Response> {
         const { id } = request.params
         const { name, description, price, categoryId } = request.body
 
-        const productRepository = new InMemoryProductRepository()
-        const updateProductUseCase = new UpdateProductUseCase(productRepository)
-
         try {
-            await updateProductUseCase.execute({
+            await this.updateProductUseCase.execute({
                 id,
                 name,
                 description,

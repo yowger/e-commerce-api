@@ -1,20 +1,22 @@
 import { Request, Response } from "express"
+import { inject, injectable } from "inversify"
 
 import { GetProductByIdUseCase } from "@/features/catalog/app/useCases/GetProductByIdUseCase"
-import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
+import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
 
+@injectable()
 export class GetProductByIdController {
+    constructor(
+        @inject(catalogTokens.useCases.GetProductById)
+        private getProductByIdUseCase: GetProductByIdUseCase
+    ) {}
+
     async handle(request: Request, response: Response): Promise<Response> {
         const { id } = request.params
-    
-        const productRepository = new InMemoryProductRepository()
-        const getProductByIdUseCase = new GetProductByIdUseCase(
-            productRepository
-        )
 
         try {
-            const product = await getProductByIdUseCase.execute(id)
 
+            const product = await this.getProductByIdUseCase.execute(id)
             if (!product) {
                 return response.status(404).json({ error: "Product not found" })
             }

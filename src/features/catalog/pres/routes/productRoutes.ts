@@ -1,16 +1,28 @@
 import express from "express"
 
-import { CreateProductController } from "@/features/catalog/pres/controllers/CreateProductController"
-import { DeleteProductController } from "@/features/catalog/pres/controllers/DeleteProductController"
-import { GetProductByIdController } from "@/features/catalog/pres/controllers/GetProductByIdController"
-import { UpdateProductController } from "@/features/catalog/pres/controllers/UpdateProductController"
+import {
+    CreateProductController,
+    DeleteProductController,
+    GetProductByIdController,
+    UpdateProductController,
+} from "@/features/catalog/pres/controllers"
+import { container } from "@/shared/di"
+import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
 
 const productRouter = express.Router()
 
-const createProductController = new CreateProductController()
-const getProductByIdController = new GetProductByIdController()
-const updateProductController = new UpdateProductController()
-const deleteProductController = new DeleteProductController()
+const createProductController = container.get<CreateProductController>(
+    catalogTokens.controllers.CreateProduct
+)
+const deleteProductController = container.get<DeleteProductController>(
+    catalogTokens.controllers.DeleteProduct
+)
+const getProductByIdController = container.get<GetProductByIdController>(
+    catalogTokens.controllers.GetProductById
+)
+const updateProductController = container.get<UpdateProductController>(
+    catalogTokens.controllers.UpdateProduct
+)
 
 productRouter.post(
     "/products",

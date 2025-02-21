@@ -1,18 +1,22 @@
 import { Request, Response } from "express"
+import { inject, injectable } from "inversify"
 
 import { DeleteProductUseCase } from "@/features/catalog/app/useCases/DeleteProductUseCase"
-import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
+import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
 
+@injectable()
 export class DeleteProductController {
+    constructor(
+        @inject(catalogTokens.useCases.DeleteProduct)
+        private deleteProductUseCase: DeleteProductUseCase
+    ) {}
+
     async handle(request: Request, response: Response): Promise<Response> {
         const { id } = request.params
 
-        const productRepository = new InMemoryProductRepository()
-        const deleteProductUseCase = new DeleteProductUseCase(productRepository)
-
         try {
-            await deleteProductUseCase.execute(id)
-            
+            await this.deleteProductUseCase.execute(id)
+
             return response.status(204).send()
         } catch (error: any) {
             return response.status(400).json({ error: error.message })

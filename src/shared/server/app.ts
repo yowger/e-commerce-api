@@ -57,6 +57,7 @@ class App {
     public start(port: number | string): void {
         this.express.listen(port, () => {
             console.log(`Server running on http://localhost:${port}`)
+            // console.log(`Server running on http://localhost:${port}`)
         })
     }
 }
