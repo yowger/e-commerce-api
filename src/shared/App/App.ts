@@ -1,4 +1,5 @@
 import cors from "cors"
+import { inject, injectable } from "inversify"
 import express, {
     Application,
     NextFunction,
@@ -9,11 +10,15 @@ import express, {
 } from "express"
 import helmet from "helmet"
 import morgan from "morgan"
+import { SwaggerService } from "../swagger/SwaggerService"
 
+@injectable()
 class App {
     public express: Application
 
-    constructor() {
+    constructor(
+        @inject(SwaggerService) private swaggerService: SwaggerService
+    ) {
         this.express = express()
     }
 
@@ -54,10 +59,16 @@ class App {
         this.express.use(prefix, router)
     }
 
+    public configureSwaggerDocs(): void {
+        this.swaggerService.setupSwaggerDocs(this.express)
+    }
+
     public start(port: number | string): void {
         this.express.listen(port, () => {
             console.log(`Server running on http://localhost:${port}`)
-            // console.log(`Server running on http://localhost:${port}`)
+            console.log(
+                `API docs are available at:\n - http://localhost:${port}/api-docs\n - http://localhost:${port}/api-docs/json`
+            )
         })
     }
 }
