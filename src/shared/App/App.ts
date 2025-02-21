@@ -30,6 +30,25 @@ class App {
         this.express.use(cors())
     }
 
+    // TODO: move file
+    /**
+     * @swagger
+     * /health:
+     *   get:
+     *     summary: Check the health of the API
+     *     tags: [Health]
+     *     responses:
+     *       200:
+     *         description: API is healthy
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: OK
+     */
     public configureDefaultRoutes(): void {
         this.express.get("/health", (req: Request, res: Response) => {
             res.status(200).send({ status: "OK" })
