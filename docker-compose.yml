@@ -8,8 +8,15 @@ services:
             dockerfile: Dockerfile
         ports:
             - "3000:3000"
+        depends_on:
+            - db
         environment:
             - NODE_ENV=production
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_USER=pg_user
+            - DB_PASSWORD=pg_password
+            - DB_NAME=e-commerce-pg
         restart: unless-stopped
 
     app-dev:
@@ -20,8 +27,29 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - .:/app 
+            - .:/app
             - /app/node_modules
         environment:
             - NODE_ENV=development
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_USER=pg_user
+            - DB_PASSWORD=pg_password
+            - DB_NAME=e-commerce-pg
         command: npm run dev
+
+    db:
+        container_name: postgres_db
+        image: postgres:17
+        environment:
+            POSTGRES_PASSWORD: pg_password
+            POSTGRES_USER: pg_user
+            POSTGRES_DB: e-commerce-pg
+        ports:
+            - "5432:5432"
+        volumes:
+            - e_commerce_api_pg_data:/var/lib/postgresql/data
+        restart: unless-stopped
+
+volumes:
+    e_commerce_api_pg_data:

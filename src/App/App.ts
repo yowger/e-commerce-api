@@ -1,16 +1,10 @@
 import cors from "cors"
 import { inject, injectable } from "inversify"
-import express, {
-    Application,
-    NextFunction,
-    Response,
-    Request,
-    RequestHandler,
-    Router,
-} from "express"
+import express, { Application, RequestHandler, Router } from "express"
 import helmet from "helmet"
 import morgan from "morgan"
-import { SwaggerService } from "../swagger/SwaggerService"
+import { SwaggerService } from "../shared/swagger/SwaggerService"
+import { errorHandler, notFoundHandler } from "./errorHandling"
 
 @injectable()
 class App {
@@ -30,44 +24,12 @@ class App {
         this.express.use(cors())
     }
 
-    // TODO: move file
-    /**
-     * @swagger
-     * /health:
-     *   get:
-     *     summary: Check the health of the API
-     *     tags: [Health]
-     *     responses:
-     *       200:
-     *         description: API is healthy
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: string
-     *                   example: OK
-     */
-    public configureDefaultRoutes(): void {
-        this.express.get("/health", (req: Request, res: Response) => {
-            res.status(200).send({ status: "OK" })
-        })
-    }
-
     public configureErrorHandling(): void {
-        this.express.use(
-            (err: Error, req: Request, res: Response, next: NextFunction) => {
-                console.error(err.stack)
-                res.status(500).json({ error: "Something went wrong!" })
-            }
-        )
+        this.express.use(errorHandler)
     }
 
     public configureNotFoundHandler(): void {
-        this.express.use((req: Request, res: Response, next: NextFunction) => {
-            res.status(404).json({ error: "Route Not Found" })
-        })
+        this.express.use(notFoundHandler)
     }
 
     public registerMiddleware(middleware: RequestHandler): void {
