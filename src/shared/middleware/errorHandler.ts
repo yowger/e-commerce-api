@@ -1,13 +1,14 @@
 import { Request, Response } from "express"
 import { getReasonPhrase, StatusCodes } from "http-status-codes"
 
-import { CustomError } from "@/shared/errors/customErrors"
+import { BaseError } from "@/shared/errors/BaseErrors"
 
 export function errorHandler(error: Error, req: Request, res: Response) {
-    if (error instanceof CustomError) {
+    if (error instanceof BaseError) {
         res.status(error.statusCode).json({ error: error.message })
     }
 
+    console.error(error.stack)
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
     })

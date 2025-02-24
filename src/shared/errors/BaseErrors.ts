@@ -1,21 +1,17 @@
-export type Exception = Readonly<{
+export type Exception<T = any> = Readonly<{
     statusCode: number
     message: string
-    meta?: Record<string, unknown>
+    meta?: T
 }>
 
-export class BaseError extends Error implements Exception {
+export class BaseError<T = any> extends Error implements Exception {
     public readonly statusCode: number
-    public readonly meta?: any
+    public readonly meta?: T
 
-    constructor(
-        message: string,
-        statusCode: number,
-        meta: Record<string, unknown> = {}
-    ) {
-        super(message)
-        this.statusCode = statusCode
-        this.meta = meta
+    constructor(exception: Exception<T>) {
+        super(exception.message)
+        this.statusCode = exception.statusCode
+        this.meta = exception.meta
         this.name = this.constructor.name
 
         Error.captureStackTrace(this, this.constructor)

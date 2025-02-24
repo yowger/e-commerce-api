@@ -14,18 +14,13 @@ export class CreateProductController {
 
     async handle(req: Request, res: Response): Promise<Response> {
         const { id, name, description, price, categoryId } = req.body
-
-        try {
-            await this.createProductUseCase.execute({
-                id,
-                name,
-                description,
-                price,
-                categoryId,
-            })
-        } catch (error) {
-            return res.status(400).json()
-        }
+        await this.createProductUseCase.execute({
+            id,
+            name,
+            description,
+            price,
+            categoryId,
+        })
 
         return res.status(StatusCodes.CREATED).json({
             message: "Product created successfully",

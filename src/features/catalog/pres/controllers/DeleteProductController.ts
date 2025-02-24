@@ -15,12 +15,8 @@ export class DeleteProductController {
     async handle(request: Request, response: Response): Promise<Response> {
         const { id } = request.params
 
-        try {
-            await this.deleteProductUseCase.execute(id)
+        await this.deleteProductUseCase.execute(id)
 
-            return response.status(StatusCodes.NO_CONTENT)
-        } catch (error: any) {
-            return response.status(400).json({ error: error.message })
-        }
+        return response.status(StatusCodes.NO_CONTENT)
     }
 }

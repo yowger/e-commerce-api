@@ -20,11 +20,6 @@ export class UpdateProductUseCase {
             categoryId: input.categoryId,
         })
 
-        // validation
-        // if (if product is not valid) {
-        //     throw new Error("Invalid product data")
-        // }
-
         await this.productRepository.save(product)
     }
 }

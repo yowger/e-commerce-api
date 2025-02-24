@@ -1,5 +1,6 @@
-import { Product } from "@/features/catalog/domain/entities/Product"
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
+import { Product } from "@/features/catalog/domain/entities/Product"
+import { NotFoundError } from "@/shared/errors/NotFoundError "
 
 import type { PaginatedResult } from "@/shared/types/pagination"
 
@@ -13,6 +14,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "High-performance laptop",
                 price: 1200,
                 categoryId: "electronics",
+                createdAt: new Date("2024-01-01T10:00:00Z"),
+                updatedAt: new Date("2024-02-01T10:00:00Z"),
             },
             {
                 id: "2",
@@ -20,6 +23,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Latest model smartphone",
                 price: 800,
                 categoryId: "electronics",
+                createdAt: new Date("2024-01-05T12:00:00Z"),
+                updatedAt: new Date("2024-02-05T12:00:00Z"),
             },
             {
                 id: "3",
@@ -27,6 +32,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Noise-canceling headphones",
                 price: 150,
                 categoryId: "electronics",
+                createdAt: new Date("2024-01-10T14:00:00Z"),
+                updatedAt: new Date("2024-02-10T14:00:00Z"),
             },
             {
                 id: "4",
@@ -34,6 +41,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Waterproof travel backpack",
                 price: 60,
                 categoryId: "accessories",
+                createdAt: new Date("2024-01-15T16:00:00Z"),
+                updatedAt: new Date("2024-02-15T16:00:00Z"),
             },
             {
                 id: "5",
@@ -41,6 +50,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "RGB gaming mouse",
                 price: 50,
                 categoryId: "electronics",
+                createdAt: new Date("2024-01-20T18:00:00Z"),
+                updatedAt: new Date("2024-02-20T18:00:00Z"),
             },
             {
                 id: "6",
@@ -48,6 +59,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Ergonomic office chair",
                 price: 200,
                 categoryId: "furniture",
+                createdAt: new Date("2024-01-25T20:00:00Z"),
+                updatedAt: new Date("2024-02-25T20:00:00Z"),
             },
             {
                 id: "7",
@@ -55,6 +68,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "High-quality mechanical keyboard",
                 price: 100,
                 categoryId: "electronics",
+                createdAt: new Date("2024-02-01T08:00:00Z"),
+                updatedAt: new Date("2024-03-01T08:00:00Z"),
             },
             {
                 id: "8",
@@ -62,6 +77,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "4K ultra-wide monitor",
                 price: 500,
                 categoryId: "electronics",
+                createdAt: new Date("2024-02-05T09:00:00Z"),
+                updatedAt: new Date("2024-03-05T09:00:00Z"),
             },
             {
                 id: "9",
@@ -69,6 +86,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Comfortable sports shoes",
                 price: 90,
                 categoryId: "fashion",
+                createdAt: new Date("2024-02-10T11:00:00Z"),
+                updatedAt: new Date("2024-03-10T11:00:00Z"),
             },
             {
                 id: "10",
@@ -76,6 +95,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Fitness tracking smartwatch",
                 price: 250,
                 categoryId: "electronics",
+                createdAt: new Date("2024-02-15T13:00:00Z"),
+                updatedAt: new Date("2024-03-15T13:00:00Z"),
             },
             {
                 id: "11",
@@ -83,6 +104,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Automatic espresso machine",
                 price: 300,
                 categoryId: "appliances",
+                createdAt: new Date("2024-02-20T15:00:00Z"),
+                updatedAt: new Date("2024-03-20T15:00:00Z"),
             },
             {
                 id: "12",
@@ -90,6 +113,8 @@ export class InMemoryProductRepository implements ProductRepository {
                 description: "Portable waterproof speaker",
                 price: 120,
                 categoryId: "electronics",
+                createdAt: new Date("2024-02-25T17:00:00Z"),
+                updatedAt: new Date("2024-03-25T17:00:00Z"),
             },
         ].map((product) => [product.id, product])
     )
@@ -98,8 +123,14 @@ export class InMemoryProductRepository implements ProductRepository {
         this.products.set(product.id, product)
     }
 
-    async findById(id: string): Promise<Product | null> {
-        return this.products.get(id) || null
+    async findById(id: string): Promise<Product> {
+        const product = this.products.get(id)
+
+        if (!product) {
+            throw new NotFoundError("Product not found")
+        }
+
+        return product
     }
 
     async findPaginated(
