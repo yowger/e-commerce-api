@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
+import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
-import { StatusCodes, getReasonPhrase } from "http-status-codes"
 
 import { CreateProductUseCase } from "@/features/catalog/app/useCases/CreateProductUseCase"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"

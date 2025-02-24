@@ -8,8 +8,8 @@ export class SwaggerService {
         app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
         app.get("/api-docs/json", (req: Request, res: Response) => {
-            console.log("swagger")
             res.setHeader("Content-Type", "application/json")
+            
             res.send(swaggerSpec)
         })
     }

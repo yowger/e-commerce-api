@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { inject, injectable } from "inversify"
 import { StatusCodes } from "http-status-codes"
+import { inject, injectable } from "inversify"
 
 import { GetProductByIdUseCase } from "@/features/catalog/app/useCases/GetProductByIdUseCase"
 import { ProductMapper } from "@/features/catalog/pres/mappers/ProductMappers"

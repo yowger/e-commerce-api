@@ -24,7 +24,7 @@ console.log("nice")
 
 app.configureDefaultMiddleware()
 app.configureSwaggerDocs()
-app.registerRoutes("/api/v1/catalog", productRouter)
+app.registerRoutes("/api/v1/products", productRouter)
 app.registerRoutes("/api", defaultRoutes)
 app.registerMiddleware(notFoundHandler)
 app.registerMiddleware(errorHandler)

@@ -4,6 +4,7 @@ import {
     CreateProductController,
     DeleteProductController,
     GetProductByIdController,
+    GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
 import { container } from "@/shared/di"
@@ -21,13 +22,16 @@ const deleteProductController = container.get<DeleteProductController>(
 const getProductByIdController = container.get<GetProductByIdController>(
     catalogTokens.controllers.GetProductById
 )
+const getProductsController = container.get<GetProductsController>(
+    catalogTokens.controllers.GetProducts
+)
 const updateProductController = container.get<UpdateProductController>(
     catalogTokens.controllers.UpdateProduct
 )
 
 /**
  * @swagger
- * /v1/catalog/products:
+ * /v1/products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -50,7 +54,7 @@ productRouter.post(
 
 /**
  * @swagger
- * /v1/catalog/products/{id}:
+ * /v1/products/{id}:
  *   get:
  *     summary: Get a product by ID
  *     tags: [Products]
@@ -74,13 +78,64 @@ productRouter.post(
  *         description: Invalid ID
  */
 productRouter.get(
-    "/products/:id",
+    "/:id",
     asyncHandler(getProductByIdController.handle.bind(getProductByIdController))
 )
 
 /**
  * @swagger
- * /v1/catalog/products/{id}:
+ * /v1/products:
+ *   get:
+ *     summary: Get a paginated list of products
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         required: false
+ *         description: The page number to retrieve (default is 1)
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *         required: false
+ *         description: The number of products per page (default is 10)
+ *     responses:
+ *       200:
+ *         description: A paginated list of products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *                 total:
+ *                   type: integer
+ *                   description: Total number of products
+ *                 page:
+ *                   type: integer
+ *                   description: Current page number
+ *                 pageSize:
+ *                   type: integer
+ *                   description: Number of products per page
+ *       400:
+ *         description: Invalid query parameters
+ */
+productRouter.get(
+    "/",
+    asyncHandler(getProductsController.handle.bind(getProductsController))
+)
+
+/**
+ * @swagger
+ * /v1/products/{id}:
  *   put:
  *     summary: Update a product by ID
  *     tags: [Products]
@@ -106,13 +161,13 @@ productRouter.get(
  *         description: Product not found
  */
 productRouter.put(
-    "/products:id",
+    ":id",
     asyncHandler(updateProductController.handle.bind(updateProductController))
 )
 
 /**
  * @swagger
- * /v1/catalog/products/{id}:
+ * /v1/products/{id}:
  *   delete:
  *     summary: Delete a product by ID
  *     tags: [Products]
@@ -132,7 +187,7 @@ productRouter.put(
  *         description: Product not found
  */
 productRouter.delete(
-    "/products/:id",
+    "/:id",
     asyncHandler(deleteProductController.handle.bind(deleteProductController))
 )
 

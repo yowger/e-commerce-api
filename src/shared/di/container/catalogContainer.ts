@@ -8,10 +8,12 @@ import {
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
 import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
+import { GetProductsUseCase } from "../../../features/catalog/app/useCases/GetProductsUseCase"
 import {
     CreateProductController,
     DeleteProductController,
     GetProductByIdController,
+    GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
 
@@ -37,6 +39,11 @@ export function configureCatalogBindings(container: Container) {
         .inTransientScope()
 
     container
+        .bind<GetProductsUseCase>(catalogTokens.useCases.GetProducts)
+        .to(GetProductsUseCase)
+        .inTransientScope()
+
+    container
         .bind<CreateProductController>(catalogTokens.controllers.CreateProduct)
         .to(CreateProductController)
         .inTransientScope()
@@ -51,6 +58,11 @@ export function configureCatalogBindings(container: Container) {
             catalogTokens.controllers.GetProductById
         )
         .to(GetProductByIdController)
+        .inTransientScope()
+
+    container
+        .bind<GetProductsController>(catalogTokens.controllers.GetProducts)
+        .to(GetProductsController)
         .inTransientScope()
 
     container

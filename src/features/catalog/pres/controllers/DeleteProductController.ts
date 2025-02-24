@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
+import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
 import { DeleteProductUseCase } from "@/features/catalog/app/useCases/DeleteProductUseCase"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
-import { StatusCodes } from "http-status-codes"
 
 @injectable()
 export class DeleteProductController {
