@@ -20,7 +20,7 @@ class App {
     public configureDefaultMiddleware(): void {
         this.express.use(express.json())
         this.express.use(express.urlencoded({ extended: true }))
-        this.express.use(morgan("combined"))
+        // this.express.use(morgan("combined"))
         this.express.use(helmet())
         this.express.use(cors())
     }
