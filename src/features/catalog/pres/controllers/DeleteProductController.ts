@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify"
 
 import { DeleteProductUseCase } from "@/features/catalog/app/useCases/DeleteProductUseCase"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { StatusCodes } from "http-status-codes"
 
 @injectable()
 export class DeleteProductController {
@@ -17,7 +18,7 @@ export class DeleteProductController {
         try {
             await this.deleteProductUseCase.execute(id)
 
-            return response.status(204).send()
+            return response.status(StatusCodes.NO_CONTENT)
         } catch (error: any) {
             return response.status(400).json({ error: error.message })
         }

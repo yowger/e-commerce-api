@@ -5,6 +5,8 @@ import { container } from "@/shared/di"
 import App from "@/App/App"
 import defaultRoutes from "@/App/defaultRoutes"
 import { Pool } from "pg"
+import { notFoundHandler } from "@/shared/middleware/notFoundHandler"
+import { errorHandler } from "@/shared/middleware/errorHandler"
 
 const PORT = process.env.PORT || 3000
 
@@ -24,7 +26,7 @@ app.configureDefaultMiddleware()
 app.configureSwaggerDocs()
 app.registerRoutes("/api/v1/catalog", productRouter)
 app.registerRoutes("/api", defaultRoutes)
-app.configureNotFoundHandler()
-app.configureErrorHandling()
+app.registerMiddleware(notFoundHandler)
+app.registerMiddleware(errorHandler)
 
 app.start(PORT)

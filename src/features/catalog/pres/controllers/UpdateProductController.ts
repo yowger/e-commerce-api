@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { inject, injectable } from "inversify"
+import { StatusCodes } from "http-status-codes"
 
 import { UpdateProductUseCase } from "@/features/catalog/app/useCases/UpdateProductUseCase"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
@@ -24,7 +25,7 @@ export class UpdateProductController {
                 categoryId,
             })
             return response
-                .status(200)
+                .status(StatusCodes.OK)
                 .json({ message: "Product updated successfully" })
         } catch (error: any) {
             return response.status(400).json({ error: error.message })

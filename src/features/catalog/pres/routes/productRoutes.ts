@@ -8,6 +8,7 @@ import {
 } from "@/features/catalog/pres/controllers"
 import { container } from "@/shared/di"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { asyncHandler } from "@/shared/utils/asyncHandler"
 
 const productRouter = express.Router()
 
@@ -44,7 +45,7 @@ const updateProductController = container.get<UpdateProductController>(
  */
 productRouter.post(
     "/products",
-    createProductController.handle.bind(createProductController)
+    asyncHandler(createProductController.handle.bind(createProductController))
 )
 
 /**
@@ -74,7 +75,7 @@ productRouter.post(
  */
 productRouter.get(
     "/products/:id",
-    getProductByIdController.handle.bind(getProductByIdController)
+    asyncHandler(getProductByIdController.handle.bind(getProductByIdController))
 )
 
 /**
@@ -106,7 +107,7 @@ productRouter.get(
  */
 productRouter.put(
     "/products:id",
-    updateProductController.handle.bind(updateProductController)
+    asyncHandler(updateProductController.handle.bind(updateProductController))
 )
 
 /**
@@ -132,7 +133,7 @@ productRouter.put(
  */
 productRouter.delete(
     "/products/:id",
-    deleteProductController.handle.bind(deleteProductController)
+    asyncHandler(deleteProductController.handle.bind(deleteProductController))
 )
 
 export { productRouter }

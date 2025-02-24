@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { inject, injectable } from "inversify"
+import { StatusCodes } from "http-status-codes"
 
 import { GetProductByIdUseCase } from "@/features/catalog/app/useCases/GetProductByIdUseCase"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
@@ -15,13 +16,14 @@ export class GetProductByIdController {
         const { id } = request.params
 
         try {
-
             const product = await this.getProductByIdUseCase.execute(id)
             if (!product) {
-                return response.status(404).json({ error: "Product not found" })
+                return response
+                    .status(StatusCodes.NOT_FOUND)
+                    .json({ error: "Product not found" })
             }
 
-            return response.status(200).json(product)
+            return response.status(StatusCodes.OK).json(product)
         } catch (error: any) {
             return response.status(400).json({ error: error.message })
         }
