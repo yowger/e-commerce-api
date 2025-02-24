@@ -6,18 +6,14 @@ import express, {
     Router,
 } from "express"
 import helmet from "helmet"
-import { inject, injectable } from "inversify"
 import morgan from "morgan"
 
 import { SwaggerService } from "@/shared/swagger/SwaggerService"
 
-@injectable()
 class App {
     public express: Application
 
-    constructor(
-        @inject(SwaggerService) private swaggerService: SwaggerService
-    ) {
+    constructor(private swaggerService: SwaggerService) {
         this.express = express()
     }
 
@@ -39,7 +35,7 @@ class App {
         this.express.use(prefix, router)
     }
 
-    public configureSwaggerDocs(): void {
+    public setUpSwaggerDocs(): void {
         this.swaggerService.setupSwaggerDocs(this.express)
     }
 

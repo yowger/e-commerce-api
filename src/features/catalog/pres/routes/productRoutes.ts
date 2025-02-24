@@ -7,7 +7,7 @@ import {
     GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
-import { container } from "@/shared/di"
+import { container } from "@/shared/di/container"
 import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
 import { asyncHandler } from "@/shared/utils/asyncHandler"
 
