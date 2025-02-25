@@ -44,6 +44,10 @@ const updateProductController = container.get<UpdateProductController>(
  *     responses:
  *       201:
  *         description: Product created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
  *       400:
  *         description: Invalid input
  */
@@ -84,49 +88,28 @@ productRouter.get(
 
 /**
  * @swagger
- * /v1/products:
+ * /v1/products/{id}:
  *   get:
- *     summary: Get a paginated list of products
+ *     summary: Get a product by ID
  *     tags: [Products]
  *     parameters:
- *       - in: query
- *         name: page
+ *       - in: path
+ *         name: id
  *         schema:
- *           type: integer
- *           minimum: 1
- *         required: false
- *         description: The page number to retrieve (default is 1)
- *       - in: query
- *         name: pageSize
- *         schema:
- *           type: integer
- *           minimum: 1
- *           maximum: 100
- *         required: false
- *         description: The number of products per page (default is 10)
+ *           type: string
+ *         required: true
+ *         description: ID of the product to retrieve
  *     responses:
  *       200:
- *         description: A paginated list of products
+ *         description: Product found
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Product'
- *                 total:
- *                   type: integer
- *                   description: Total number of products
- *                 page:
- *                   type: integer
- *                   description: Current page number
- *                 pageSize:
- *                   type: integer
- *                   description: Number of products per page
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
  *       400:
- *         description: Invalid query parameters
+ *         description: Invalid ID
  */
 productRouter.get(
     "/",
@@ -155,6 +138,10 @@ productRouter.get(
  *     responses:
  *       200:
  *         description: Product updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
  *       400:
  *         description: Invalid input
  *       404:
@@ -168,8 +155,8 @@ productRouter.put(
 /**
  * @swagger
  * /v1/products/{id}:
- *   delete:
- *     summary: Delete a product by ID
+ *   put:
+ *     summary: Update a product by ID
  *     tags: [Products]
  *     parameters:
  *       - in: path
@@ -177,14 +164,20 @@ productRouter.put(
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the product to delete
+ *         description: ID of the product to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
  *     responses:
- *       204:
- *         description: Product deleted successfully
- *       400:
- *         description: Invalid ID
- *       404:
- *         description: Product not found
+ *       200:
+ *         description: Product updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
  */
 productRouter.delete(
     "/:id",
