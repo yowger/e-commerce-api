@@ -2,14 +2,15 @@ import "dotenv/config"
 import "module-alias/register"
 import { Pool } from "pg"
 
-import App from "@/App/App"
-import defaultRoutes from "@/App/defaultRoutes"
+import App from "@/lib/App/App"
+import defaultRoutes from "@/lib/App/defaultRoutes"
 import { productRouter } from "@/features/catalog/pres/routes/productRoutes"
-import { errorHandler } from "@/shared/middleware/errorHandler"
-import { notFoundHandler } from "@/shared/middleware/notFoundHandler"
-import { SwaggerService } from "@/shared/swagger/SwaggerService"
+import { errorHandler } from "@/lib/http/middleware/errorHandler"
+import { notFoundHandler } from "@/lib/http/middleware/notFoundHandler"
+import { SwaggerService } from "@/lib/swagger/SwaggerService"
 
-const PORT = process.env.PORT || 3000
+// const PORT = process.env.PORT || 3000
+const PORT = 4000
 
 const swaggerService = new SwaggerService()
 const app = new App(swaggerService)

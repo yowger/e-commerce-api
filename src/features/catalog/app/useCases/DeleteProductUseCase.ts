@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
-import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 
 @injectable()
 export class DeleteProductUseCase {

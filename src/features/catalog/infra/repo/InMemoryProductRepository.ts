@@ -1,8 +1,8 @@
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
 import { Product } from "@/features/catalog/domain/entities/Product"
-import { NotFoundError } from "@/shared/errors/NotFoundError "
+import { NotFoundError } from "@/lib/errors/NotFoundError "
 
-import type { PaginatedResult } from "@/shared/types/pagination"
+import type { PaginatedResult } from "@/lib/types/pagination"
 
 export class InMemoryProductRepository implements ProductRepository {
     // private products: Map<string, Product> = new Map()

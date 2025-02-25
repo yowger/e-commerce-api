@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
 import { UpdateProductUseCase } from "@/features/catalog/app/useCases/UpdateProductUseCase"
-import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 
 @injectable()
 export class UpdateProductController {
@@ -12,9 +12,9 @@ export class UpdateProductController {
         private updateProductUseCase: UpdateProductUseCase
     ) {}
 
-    async handle(request: Request, response: Response): Promise<Response> {
-        const { id } = request.params
-        const { name, description, price, categoryId } = request.body
+    async handle(req: Request, res: Response): Promise<Response> {
+        const { id } = req.params
+        const { name, description, price, categoryId } = req.body
 
         await this.updateProductUseCase.execute({
             id,
@@ -24,7 +24,7 @@ export class UpdateProductController {
             categoryId,
         })
 
-        return response
+        return res
             .status(StatusCodes.OK)
             .json({ message: "Product updated successfully" })
     }

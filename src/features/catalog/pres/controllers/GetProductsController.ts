@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
 import { GetProductsUseCase } from "@/features/catalog/app/useCases/GetProductsUseCase"
-import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 
 @injectable()
 export class GetProductsController {

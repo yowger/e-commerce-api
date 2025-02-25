@@ -1,6 +1,6 @@
 import { Product } from "@/features/catalog/domain/entities/Product"
 
-import type { PaginatedResult } from "@/shared/types/pagination"
+import type { PaginatedResult } from "@/lib/types/pagination"
 
 export interface ProductRepository {
     save(product: Product): Promise<void>

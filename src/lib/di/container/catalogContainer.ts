@@ -5,7 +5,7 @@ import {
     DeleteProductUseCase,
     GetProductByIdUseCase,
 } from "@/features/catalog/app/useCases"
-import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
 import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
 import { GetProductsUseCase } from "@/features/catalog/app/useCases/GetProductsUseCase"

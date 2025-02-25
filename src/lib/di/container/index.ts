@@ -1,6 +1,6 @@
 import { Container } from "inversify"
 
-import { configureCatalogBindings } from "@/shared/di/container/catalogContainer"
+import { configureCatalogBindings } from "@/lib/di/container/catalogContainer"
 
 export function configureContainer() {
     const container = new Container()

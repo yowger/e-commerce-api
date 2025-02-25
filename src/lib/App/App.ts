@@ -8,7 +8,7 @@ import express, {
 import helmet from "helmet"
 import morgan from "morgan"
 
-import { SwaggerService } from "@/shared/swagger/SwaggerService"
+import { SwaggerService } from "@/lib/swagger/SwaggerService"
 
 class App {
     public express: Application

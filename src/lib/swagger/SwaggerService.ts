@@ -1,7 +1,7 @@
 import { Request, Response, Application } from "express"
 import swaggerUi from "swagger-ui-express"
 
-import swaggerSpec from "@/shared/swagger/swaggerSpec"
+import swaggerSpec from "@/lib/swagger/swaggerSpec"
 
 export class SwaggerService {
     setupSwaggerDocs(app: Application): void {

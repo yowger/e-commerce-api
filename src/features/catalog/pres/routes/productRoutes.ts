@@ -7,9 +7,9 @@ import {
     GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
-import { container } from "@/shared/di/container"
-import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
-import { asyncHandler } from "@/shared/utils/asyncHandler"
+import { container } from "@/lib/di/container"
+import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
+import { asyncHandler } from "@/lib/http/utils/asyncHandler"
 
 const productRouter = express.Router()
 

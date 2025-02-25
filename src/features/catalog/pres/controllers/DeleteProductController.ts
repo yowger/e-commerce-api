@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
 import { DeleteProductUseCase } from "@/features/catalog/app/useCases/DeleteProductUseCase"
-import { catalogTokens } from "@/shared/di/tokens/catalogTokens"
+import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 
 @injectable()
 export class DeleteProductController {
@@ -12,11 +12,11 @@ export class DeleteProductController {
         private deleteProductUseCase: DeleteProductUseCase
     ) {}
 
-    async handle(request: Request, response: Response): Promise<Response> {
-        const { id } = request.params
+    async handle(req: Request, res: Response): Promise<Response> {
+        const { id } = req.params
 
         await this.deleteProductUseCase.execute(id)
 
-        return response.status(StatusCodes.NO_CONTENT)
+        return res.status(StatusCodes.NO_CONTENT)
     }
 }
