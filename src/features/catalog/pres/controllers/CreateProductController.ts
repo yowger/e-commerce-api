@@ -3,7 +3,13 @@ import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
 import { CreateProductUseCase } from "@/features/catalog/app/useCases/CreateProductUseCase"
+import { CreateProductSchema } from "@/features/catalog/app/validation/productSchema"
 import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
+import { validator } from "@/lib/http/validation/Validator"
+
+const { getBody } = validator({
+    body: CreateProductSchema,
+})
 
 @injectable()
 export class CreateProductController {
@@ -13,10 +19,9 @@ export class CreateProductController {
     ) {}
 
     async handle(req: Request, res: Response): Promise<Response> {
-        const { id, name, description, price, categoryId } = req.body
-        
+        const { name, description, price, categoryId } = getBody(req)
+
         await this.createProductUseCase.execute({
-            id,
             name,
             description,
             price,

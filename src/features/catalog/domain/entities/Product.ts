@@ -1,5 +1,5 @@
 export class Product {
-    public readonly id: string
+    public readonly id: string | null
     public readonly name: string
     public readonly description: string
     public readonly price: number
@@ -8,7 +8,7 @@ export class Product {
     public readonly updatedAt: Date
 
     constructor(params: {
-        id: string
+        id?: string
         name: string
         description?: string
         price: number

@@ -4,6 +4,12 @@ import { inject, injectable } from "inversify"
 
 import { GetProductsUseCase } from "@/features/catalog/app/useCases/GetProductsUseCase"
 import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
+import { validator } from "@/lib/http/validation/Validator"
+import { paginationSchema } from "@/lib/http/validation/paginationSchema"
+
+const { getQuery } = validator({
+    query: paginationSchema,
+})
 
 @injectable()
 export class GetProductsController {
@@ -13,8 +19,7 @@ export class GetProductsController {
     ) {}
 
     async handle(req: Request, res: Response): Promise<Response> {
-        const page = parseInt(req.query.page as string) || 1
-        const pageSize = parseInt(req.query.pageSize as string) || 10
+        const { page, pageSize } = getQuery(req)
 
         const product = await this.getProductsUseCase.execute(page, pageSize)
 

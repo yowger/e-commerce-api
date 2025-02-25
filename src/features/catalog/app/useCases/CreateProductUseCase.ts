@@ -13,7 +13,7 @@ export class CreateProductUseCase {
 
     async execute(input: CreateProductInput): Promise<void> {
         const product = new Product({
-            id: input.id,
+            id: null,
             name: input.name,
             description: input.description,
             price: input.price,
@@ -25,7 +25,6 @@ export class CreateProductUseCase {
 }
 
 export interface CreateProductInput {
-    id: string
     name: string
     description?: string
     price: number
