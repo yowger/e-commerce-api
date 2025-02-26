@@ -10,7 +10,7 @@ import { notFoundHandler } from "@/lib/http/middleware/notFoundHandler"
 import { SwaggerService } from "@/lib/swagger/SwaggerService"
 
 // const PORT = process.env.PORT || 3000
-const PORT = 4000
+const PORT = 3000
 
 const swaggerService = new SwaggerService()
 const app = new App(swaggerService)
