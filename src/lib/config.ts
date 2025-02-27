@@ -2,13 +2,13 @@ import "dotenv/config"
 import { z } from "zod"
 
 const envSchema = z.object({
-    BASE_URL: z.string().url(),
     ENV: z.enum(["development", "test", "production"]).default("development"),
     PORT: z.coerce
-        .number()
-        .positive()
-        .max(65536, `port should be >= 0 and < 65536`)
-        .default(3000),
+    .number()
+    .positive()
+    .max(65536, `port should be >= 0 and < 65536`)
+    .default(3000),
+    AUTH_BASE_URL: z.string().url(),
     AUTH_SECRET: z.string(),
     AUTH_CLIENT_ID: z.string(),
     AUTH_ISSUER_BASE_URL: z.string().url(),
