@@ -2,6 +2,7 @@ import cors from "cors"
 import express, {
     Application,
     ErrorRequestHandler,
+    Request,
     RequestHandler,
     Router,
 } from "express"
@@ -25,7 +26,6 @@ class App {
     public configureDefaultMiddleware(): void {
         this.express.use(express.json())
         this.express.use(express.urlencoded({ extended: true }))
-        this.express.use(morgan("dev"))
         this.express.use(helmet())
         this.express.use(cors())
     }
@@ -38,6 +38,20 @@ class App {
 
     public registerRoutes(prefix: string, router: Router): void {
         this.express.use(prefix, router)
+    }
+
+    public setUpMorgan() {
+        morgan.token("user-id", (req: Request) => {
+            if (req.oidc && req.oidc.user) {
+                return req.oidc.user.sub
+            }
+
+            return "guest"
+        })
+
+        this.express.use(
+            morgan(":method :url :status :response-time ms - user-id=:user-id")
+        )
     }
 
     public setUpAuth(): void {

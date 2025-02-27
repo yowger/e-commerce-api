@@ -24,4 +24,4 @@ defaultRoutes.get("/health", (req: Request, res: Response) => {
     res.status(200).send({ status: "OK" })
 })
 
-export default defaultRoutes
+export { defaultRoutes }
