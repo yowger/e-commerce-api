@@ -46,7 +46,7 @@ class App {
                 authRequired: false,
                 auth0Logout: true,
                 secret: this.config.AUTH_SECRET,
-                baseURL: this.config.AUTH_BASE_URL,
+                baseURL: `${this.config.BASE_URL}:${this.config.DB_PORT}`,
                 clientID: this.config.AUTH_CLIENT_ID,
                 issuerBaseURL: this.config.AUTH_ISSUER_BASE_URL,
             })
