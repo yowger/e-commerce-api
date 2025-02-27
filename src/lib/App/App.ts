@@ -5,15 +5,20 @@ import express, {
     RequestHandler,
     Router,
 } from "express"
+import { auth } from "express-openid-connect"
 import helmet from "helmet"
 import morgan from "morgan"
 
+import { Config } from "@/lib/config"
 import { SwaggerService } from "@/lib/swagger/SwaggerService"
 
 class App {
     public express: Application
 
-    constructor(private swaggerService: SwaggerService) {
+    constructor(
+        private swaggerService: SwaggerService,
+        private config: Config
+    ) {
         this.express = express()
     }
 
@@ -35,15 +40,30 @@ class App {
         this.express.use(prefix, router)
     }
 
+    public setUpAuth(): void {
+        this.express.use(
+            auth({
+                authRequired: false,
+                auth0Logout: true,
+                secret: this.config.AUTH_SECRET,
+                baseURL: this.config.AUTH_BASE_URL,
+                clientID: this.config.AUTH_CLIENT_ID,
+                issuerBaseURL: this.config.AUTH_ISSUER_BASE_URL,
+            })
+        )
+    }
+
     public setUpSwaggerDocs(): void {
         this.swaggerService.setupSwaggerDocs(this.express)
     }
 
-    public start(port: number | string): void {
-        this.express.listen(port, () => {
-            console.log(`Server running on http://localhost:${port}`)
+    public start(): void {
+        this.express.listen(this.config.PORT, () => {
             console.log(
-                `API docs are available at:\n - http://localhost:${port}/api-docs\n - http://localhost:${port}/api-docs/json`
+                `Server running on http://localhost:${this.config.PORT}`
+            )
+            console.log(
+                `API docs are available at:\n - http://localhost:${this.config.PORT}/api-docs\n - http://localhost:${this.config.PORT}/api-docs/json`
             )
         })
     }
