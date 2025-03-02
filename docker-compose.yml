@@ -31,13 +31,28 @@ services:
     db:
         container_name: postgres_db
         image: postgres:17
-        env_file:
-            - .env
+        environment:
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_NAME}
         ports:
             - "5432:5432"
         volumes:
             - e_commerce_api_pg_data:/var/lib/postgresql/data
         restart: unless-stopped
+
+    dbmate:
+        image: amacneil/dbmate:2
+        container_name: dbmate_migrations
+        depends_on:
+            - db
+        environment:
+            DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}?sslmode=disable
+        volumes:
+            - ./src/lib/db/migrations:/db/migrations
+        entrypoint: ["/bin/sh", "-c"]
+        command: ["dbmate wait && dbmate up"]
+
 
 volumes:
     e_commerce_api_pg_data:

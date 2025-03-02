@@ -1,0 +1,26 @@
+-- migrate:up
+
+
+-- migrate:down
+
+-- migrate:up
+CREATE TABLE products (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL CHECK (
+        LENGTH(name) >= 3
+        AND LENGTH(name) <= 100
+    ),
+    description TEXT CHECK (LENGTH(description) <= 500),
+    price NUMERIC(10, 2) NOT NULL CHECK (
+        price >= 0
+        AND price <= 999999.99
+    ),
+    category_id UUID NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+);
+CREATE INDEX idx_products_name ON products(name);
+CREATE INDEX idx_products_category ON products(category_id);
+-- migrate:down
+DROP TABLE products;

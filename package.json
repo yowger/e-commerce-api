@@ -5,7 +5,11 @@
     "scripts": {
         "build": "tsc",
         "start": "node -r tsconfig-paths/register dist/index.js",
-        "dev": "nodemon --legacy-watch --watch src --exec ts-node src/index.ts"
+        "dev": "nodemon --legacy-watch --watch src --exec ts-node src/index.ts",
+        "db:init": "dbmate --migrations-dir src/lib/db/migrations up",
+        "db:rollback": "dbmate --migrations-dir src/lib/db/migrations down",
+        "db:new": "dbmate --migrations-dir src/lib/db/migrations new",
+        "db:status": "dbmate --migrations-dir src/lib/db/migrations status"
     },
     "keywords": [],
     "author": "",
@@ -34,6 +38,7 @@
         "@types/pg": "^8.11.11",
         "@types/swagger-jsdoc": "^6.0.4",
         "@types/swagger-ui-express": "^4.1.7",
+        "dbmate": "^2.26.0",
         "nodemon": "^3.1.9",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0"
