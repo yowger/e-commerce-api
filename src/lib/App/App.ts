@@ -59,10 +59,10 @@ class App {
             auth({
                 authRequired: false,
                 auth0Logout: true,
-                secret: this.config.AUTH_SECRET,
-                baseURL: `${this.config.AUTH_BASE_URL}`,
-                clientID: this.config.AUTH_CLIENT_ID,
-                issuerBaseURL: this.config.AUTH_ISSUER_BASE_URL,
+                secret: this.config.auth.AUTH_SECRET,
+                baseURL: `${this.config.auth.AUTH_BASE_URL}`,
+                clientID: this.config.auth.AUTH_CLIENT_ID,
+                issuerBaseURL: this.config.auth.AUTH_ISSUER_BASE_URL,
             })
         )
     }

@@ -26,9 +26,13 @@ app.registerMiddleware(errorHandler)
 app.start()
 
 // const pool = new Pool({
-//     user: process.env.DB_USER,
-//     host: process.env.DB_HOST,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: parseInt(process.env.DB_PORT),
+//     user: config.db.DB_USER,
+//     host: config.db.DB_HOST,
+//     database: config.db.DB_NAME,
+//     password: config.db.DB_PASSWORD,
+//     port: config.db.DB_PORT,
+// })
+
+// pool.on("connect", () => {
+//     console.log("PG connection successful")
 // })
