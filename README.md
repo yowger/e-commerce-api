@@ -20,12 +20,12 @@ docker compose logs -f app-dev db dbmate
 
 ### Drop & Recreate the Database
 ```sh
-docker compose run --rm dbmate dbmate drop
-docker compose run --rm dbmate dbmate up
+docker compose run --rm dbmate drop
+docker compose run --rm dbmate up
 ```
 
 ### Roll Back & Reapply Last Migration
 ```sh
-docker compose run --rm dbmate dbmate down
-docker compose run --rm dbmate dbmate up
+docker compose run --rm dbmate down
+docker compose run --rm dbmate up
 ```
