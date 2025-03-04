@@ -51,7 +51,7 @@ services:
         volumes:
             - ./src/lib/db/migrations:/db/migrations
         entrypoint: ["dbmate"]
-        command: ["--help"]
+        command: ["up"]
 
 
 volumes:
