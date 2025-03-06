@@ -123,11 +123,11 @@ export class InMemoryProductRepository implements ProductRepository {
         this.products.set(product.id, product)
     }
 
-    async findById(id: string): Promise<Product> {
+    async findById(id: string): Promise<Product | null> {
         const product = this.products.get(id)
 
         if (!product) {
-            throw new NotFoundError("Product not found")
+            return null
         }
 
         return product

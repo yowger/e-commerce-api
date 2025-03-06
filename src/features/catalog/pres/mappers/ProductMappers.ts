@@ -1,6 +1,7 @@
 import { ProductDto } from "@/features/catalog/pres/dtos/productDto"
 import { Product } from "@/features/catalog/domain/entities/Product"
 
+// TODO: add 'camelcase-keys' maybe
 export class ProductMapper {
     static toDTO(product: Product): ProductDto {
         return {
@@ -14,15 +15,27 @@ export class ProductMapper {
         }
     }
 
-    static toDomain(dto: ProductDto): Product {
+    static toDomain(row: any): Product {
         return new Product({
-            id: dto.id,
-            name: dto.name,
-            price: dto.price,
-            categoryId: dto.categoryId,
-            description: dto.description,
-            createdAt: new Date(dto.createdAt),
-            updatedAt: new Date(dto.updatedAt),
+            id: row.id,
+            name: row.name,
+            price: row.price,
+            categoryId: row.categoryId ?? row.category_id,
+            description: row.description,
+            createdAt: new Date(row.createdAt ?? row.created_at),
+            updatedAt: new Date(row.updatedAt ?? row.updated_at),
         })
+    }
+
+    static toPersistence(product: Product): any {
+        return {
+            id: product.id,
+            name: product.name,
+            description: product.description ?? null,
+            price: product.price,
+            category_id: product.categoryId,
+            created_at: product.createdAt ?? new Date(),
+            updated_at: new Date(),
+        }
     }
 }

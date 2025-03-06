@@ -13,7 +13,6 @@ export class CreateProductUseCase {
 
     async execute(input: CreateProductInput): Promise<void> {
         const product = new Product({
-            id: null,
             name: input.name,
             description: input.description,
             price: input.price,

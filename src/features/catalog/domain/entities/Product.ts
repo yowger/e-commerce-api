@@ -1,7 +1,7 @@
 export class Product {
     public readonly id: string | null
     public readonly name: string
-    public readonly description: string
+    public readonly description: string | null
     public readonly price: number
     public readonly categoryId: string
     public readonly createdAt: Date

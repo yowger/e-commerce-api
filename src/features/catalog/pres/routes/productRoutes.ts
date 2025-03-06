@@ -52,7 +52,7 @@ const updateProductController = container.get<UpdateProductController>(
  *         description: Invalid input
  */
 productRouter.post(
-    "/products",
+    "/",
     asyncHandler(createProductController.handle.bind(createProductController))
 )
 
@@ -88,28 +88,50 @@ productRouter.get(
 
 /**
  * @swagger
- * /v1/products/{id}:
+ * /v1/products:
  *   get:
- *     summary: Get a product by ID
+ *     summary: Get a paginated list of products
  *     tags: [Products]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - in: query
+ *         name: page
  *         schema:
- *           type: string
- *         required: true
- *         description: ID of the product to retrieve
+ *           type: integer
+ *           minimum: 1
+ *         required: false
+ *         description: The page number (default is 1)
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           enum: [10, 20, 30, 40, 50]
+ *         required: false
+ *         description: Number of products per page (default is 10)
  *     responses:
  *       200:
- *         description: Product found
+ *         description: Paginated list of products
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Product'
- *       404:
- *         description: Product not found
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     pageSize:
+ *                       type: integer
+ *                     totalItems:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
  *       400:
- *         description: Invalid ID
+ *         description: Invalid pagination parameters
  */
 productRouter.get(
     "/",

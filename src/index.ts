@@ -1,5 +1,6 @@
 import "dotenv/config"
 import "module-alias/register"
+import "@/lib/db/connect"
 
 import App from "@/lib/App/App"
 import { config } from "@/lib/config"

@@ -49,12 +49,11 @@ const options: swaggerJsdoc.Options = {
                         },
                     },
                     example: {
-                        id: "12345",
                         name: "Smartphone",
                         description:
                             "A high-end smartphone with advanced features.",
                         price: 999.99,
-                        categoryId: "67890",
+                        categoryId: "210c57d0-e8d5-47f5-b67b-4376eb074eb3",
                     },
                 },
                 Pagination: {

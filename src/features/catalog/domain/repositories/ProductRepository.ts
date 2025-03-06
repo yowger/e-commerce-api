@@ -4,10 +4,11 @@ import type { PaginatedResult } from "@/lib/types/pagination"
 
 export interface ProductRepository {
     save(product: Product): Promise<void>
-    findById(id: string): Promise<Product>
+    findById(id: string): Promise<Product | null>
     findPaginated(
         page: number,
         pageSize: number
     ): Promise<PaginatedResult<Product[]>>
     delete(id: string): Promise<void>
+    // TODO: make update
 }

@@ -5,9 +5,10 @@ import {
     DeleteProductUseCase,
     GetProductByIdUseCase,
 } from "@/features/catalog/app/useCases"
+import { db } from "@/lib/db/connect"
 import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
-import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
+// import { InMemoryProductRepository } from "@/features/catalog/infra/repo/InMemoryProductRepository"
 import { GetProductsUseCase } from "@/features/catalog/app/useCases/GetProductsUseCase"
 import {
     CreateProductController,
@@ -16,12 +17,17 @@ import {
     GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
+import { InDbProductRepository } from "@/features/catalog/infra/repo/inDbProductRepository"
 
 export function configureCatalogBindings(container: Container) {
+    // container
+    //     .bind<ProductRepository>(catalogTokens.repositories.Product)
+    //     .to(InMemoryProductRepository)
+    //     .inSingletonScope()
+
     container
         .bind<ProductRepository>(catalogTokens.repositories.Product)
-        .to(InMemoryProductRepository)
-        .inSingletonScope()
+        .toDynamicValue(() => new InDbProductRepository(db))
 
     container
         .bind<CreateProductUseCase>(catalogTokens.useCases.CreateProduct)

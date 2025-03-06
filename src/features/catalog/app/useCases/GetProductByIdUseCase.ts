@@ -11,7 +11,7 @@ export class GetProductByIdUseCase {
         private productRepository: ProductRepository
     ) {}
 
-    async execute(id: string): Promise<Product> {
+    async execute(id: string): Promise<Product | null> {
         return this.productRepository.findById(id)
     }
 }
