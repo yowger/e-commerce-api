@@ -113,42 +113,54 @@ productRouter.get(
  *         schema:
  *           type: string
  *         required: false
- *         description: Filter products by name (case-insensitive)
+ *         description: |
+ *           Filter products by name.
+ *           This is case-insensitive.
  *       - in: query
  *         name: minPrice
  *         schema:
  *           type: number
  *           minimum: 0
  *         required: false
- *         description: Filter products with a minimum price
+ *         description: |
+ *           Filter products by minimum price.
+ *           The value must be greater than or equal to 0.
  *       - in: query
  *         name: maxPrice
  *         schema:
  *           type: number
  *           minimum: 0
  *         required: false
- *         description: Filter products with a maximum price
+ *         description: |
+ *           Filter products by maximum price.
+ *           The value must be greater than or equal to 0.
  *       - in: query
  *         name: categoryId
  *         schema:
  *           type: string
  *           format: uuid
  *         required: false
- *         description: Filter products by category ID
+ *         description: |
+ *           Filter products by category ID.
+ *           The value must be a valid UUID.
  *       - in: query
  *         name: createdAfter
  *         schema:
  *           type: string
  *           format: date
  *         required: false
- *         description: Filter products created after a specific date (format: YYYY-MM-DD)
+ *         description: |
+ *           Filter products created after a specific date.
+ *           Format: YYYY-MM-DD
  *       - in: query
  *         name: createdBefore
  *         schema:
  *           type: string
  *           format: date
  *         required: false
- *         description: Filter products created before a specific date (format: YYYY-MM-DD)
+ *         description: |
+ *           Filter products created before a specific date.
+ *           Format: YYYY-MM-DD
  *     responses:
  *       200:
  *         description: Paginated and filtered list of products
