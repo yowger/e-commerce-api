@@ -1,5 +1,5 @@
 import swaggerJsdoc from "swagger-jsdoc"
-
+// TODO: turn to json
 const options: swaggerJsdoc.Options = {
     definition: {
         openapi: "3.0.0",
@@ -54,6 +54,48 @@ const options: swaggerJsdoc.Options = {
                             "A high-end smartphone with advanced features.",
                         price: 999.99,
                         categoryId: "210c57d0-e8d5-47f5-b67b-4376eb074eb3",
+                    },
+                },
+                Category: {
+                    type: "object",
+                    required: ["name", "description"],
+                    properties: {
+                        id: {
+                            type: "string",
+                            description:
+                                "The auto-generated ID of the category",
+                        },
+                        name: {
+                            type: "string",
+                            minLength: 3,
+                            maxLength: 100,
+                            description: "The name of the category",
+                        },
+                        description: {
+                            type: "string",
+                            minLength: 10,
+                            maxLength: 500,
+                            description: "The description of the category",
+                        },
+                        created_at: {
+                            type: "string",
+                            format: "date-time",
+                            description:
+                                "The timestamp when the category was created",
+                        },
+                        updated_at: {
+                            type: "string",
+                            format: "date-time",
+                            description:
+                                "The timestamp when the category was last updated",
+                        },
+                    },
+                    example: {
+                        id: "210c57d0-e8d5-47f5-b67b-4376eb074eb3",
+                        name: "Electronics",
+                        description: "All electronic products",
+                        created_at: "2025-03-10T08:00:00.000Z",
+                        updated_at: "2025-03-10T08:00:00.000Z",
                     },
                 },
                 Pagination: {

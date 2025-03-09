@@ -3,5 +3,5 @@ import { CategoryTable } from "./Category"
 
 export interface Database {
     products: ProductTable
-    category: CategoryTable
+    categories: CategoryTable
 }
