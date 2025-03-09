@@ -86,11 +86,12 @@ productRouter.get(
     asyncHandler(getProductByIdController.handle.bind(getProductByIdController))
 )
 
+// TODO: move swagger document
 /**
  * @swagger
  * /v1/products:
  *   get:
- *     summary: Get a paginated list of products
+ *     summary: Get a paginated and filtered list of products
  *     tags: [Products]
  *     parameters:
  *       - in: query
@@ -107,9 +108,50 @@ productRouter.get(
  *           enum: [10, 20, 30, 40, 50]
  *         required: false
  *         description: Number of products per page (default is 10)
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter products by name (case-insensitive)
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *           minimum: 0
+ *         required: false
+ *         description: Filter products with a minimum price
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *           minimum: 0
+ *         required: false
+ *         description: Filter products with a maximum price
+ *       - in: query
+ *         name: categoryId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: false
+ *         description: Filter products by category ID
+ *       - in: query
+ *         name: createdAfter
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Filter products created after a specific date (format: YYYY-MM-DD)
+ *       - in: query
+ *         name: createdBefore
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Filter products created before a specific date (format: YYYY-MM-DD)
  *     responses:
  *       200:
- *         description: Paginated list of products
+ *         description: Paginated and filtered list of products
  *         content:
  *           application/json:
  *             schema:
@@ -131,7 +173,9 @@ productRouter.get(
  *                     totalPages:
  *                       type: integer
  *       400:
- *         description: Invalid pagination parameters
+ *         description: Invalid query parameters
+ *       500:
+ *         description: Internal server error
  */
 productRouter.get(
     "/",

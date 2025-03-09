@@ -1,4 +1,4 @@
-import { ProductDto } from "@/features/catalog/pres/dtos/productDto"
+import { ProductDto } from "@/features/catalog/app/dtos/productDto"
 import { Product } from "@/features/catalog/domain/entities/Product"
 
 // TODO: add 'camelcase-keys' maybe

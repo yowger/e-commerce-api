@@ -3,9 +3,10 @@ import { Kysely } from "kysely"
 import { ProductRepository } from "@/features/catalog/domain/repositories/ProductRepository"
 import { ProductMapper } from "@/features/catalog/pres/mappers/ProductMappers"
 import { Product } from "@/features/catalog/domain/entities/Product"
-import { PaginatedResult } from "@/lib/types/pagination"
 
+import type { ProductFilter } from "@/features/catalog/app/dtos/productDto"
 import type { Database } from "@/lib/db/types"
+import type { PaginatedResult } from "@/lib/types/pagination"
 
 export class InDbProductRepository implements ProductRepository {
     constructor(private readonly db: Kysely<Database>) {}
@@ -29,21 +30,42 @@ export class InDbProductRepository implements ProductRepository {
 
         return ProductMapper.toDomain(product)
     }
+
     async findPaginated(
         page: number,
-        pageSize: number
+        pageSize: number,
+        filter?: ProductFilter
     ): Promise<PaginatedResult<Product[]>> {
         const offset = (page - 1) * pageSize
 
+        let query = this.db.selectFrom("products").selectAll()
+
+        if (filter) {
+            if (filter.name) {
+                query = query.where("name", "like", `${filter.name}`)
+            }
+        }
+
+        if (filter?.maxPrice !== undefined) {
+            query = query.where("price", "<=", filter.maxPrice)
+        }
+
+        if (filter?.categoryId) {
+            query = query.where("category_id", "=", filter.categoryId)
+        }
+
+        if (filter?.createdAfter) {
+            query = query.where("created_at", ">=", filter.createdAfter)
+        }
+
+        if (filter?.createdBefore) {
+            query = query.where("created_at", "<=", filter.createdBefore)
+        }
+
         const [data, totalItemsResult] = await Promise.all([
-            this.db
-                .selectFrom("products")
-                .selectAll()
-                .limit(pageSize)
-                .offset(offset)
-                .execute(),
-            this.db
-                .selectFrom("products")
+            query.limit(pageSize).offset(offset).execute(),
+            query
+                .clearSelect()
                 .select(({ fn }) => fn.countAll().as("totalItems"))
                 .executeTakeFirst(),
         ])

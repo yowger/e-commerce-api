@@ -1,5 +1,6 @@
 import { Product } from "@/features/catalog/domain/entities/Product"
 
+import type { ProductFilter } from "@/features/catalog/app/dtos/productDto"
 import type { PaginatedResult } from "@/lib/types/pagination"
 
 export interface ProductRepository {
@@ -7,7 +8,8 @@ export interface ProductRepository {
     findById(id: string): Promise<Product | null>
     findPaginated(
         page: number,
-        pageSize: number
+        pageSize: number,
+        filter?: ProductFilter
     ): Promise<PaginatedResult<Product[]>>
     delete(id: string): Promise<void>
     // TODO: make update
