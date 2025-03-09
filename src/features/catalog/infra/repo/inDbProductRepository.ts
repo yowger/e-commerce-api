@@ -40,10 +40,8 @@ export class InDbProductRepository implements ProductRepository {
 
         let query = this.db.selectFrom("products").selectAll()
 
-        if (filter) {
-            if (filter.name) {
-                query = query.where("name", "like", `${filter.name}`)
-            }
+        if (filter?.name) {
+            query = query.where("name", "like", `%${filter.name}%`)
         }
 
         if (filter?.maxPrice !== undefined) {
