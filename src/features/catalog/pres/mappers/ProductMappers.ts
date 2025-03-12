@@ -31,7 +31,6 @@ export class ProductMapper {
 
     static toPersistence(product: Product): any {
         return {
-            id: product.id,
             name: product.name,
             slug: product.slug,
             description: product.description ?? null,

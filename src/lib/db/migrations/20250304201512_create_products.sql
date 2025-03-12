@@ -14,13 +14,13 @@ CREATE TABLE products (
         price >= 0
         AND price <= 999999.99
     ),
-    category_slug TEXT NOT NULL,
+    category_id UUID NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
-    CONSTRAINT fk_category FOREIGN KEY (category_slug) REFERENCES categories(slug) ON DELETE CASCADE
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
 CREATE INDEX idx_products_name ON products(name);
 CREATE INDEX idx_products_slug ON products(slug);
-CREATE INDEX idx_products_category_slug ON products(category_slug);
+CREATE INDEX idx_products_category_id ON products(category_id);
 -- migrate:down
 DROP TABLE products;
