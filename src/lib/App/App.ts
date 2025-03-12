@@ -49,13 +49,9 @@ class App {
             return "guest"
         })
 
-        morgan.token("date-time", () => {
-            return new Date().toLocaleString()
-        })
-
         this.express.use(
             morgan(
-                ":date-time :method :url :status :response-time ms - user-id=:user-id"
+                ":date[iso] :method :url :status :response-time ms - user-id=:user-id"
             )
         )
     }
