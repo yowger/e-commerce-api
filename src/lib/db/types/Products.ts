@@ -6,6 +6,7 @@ export interface ProductTable {
     description?: string
     price: number
     category_id: string
+    slug: string
     created_at: Generated<Date>
     updated_at: Generated<Date>
 }

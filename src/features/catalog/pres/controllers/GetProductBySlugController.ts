@@ -2,24 +2,24 @@ import { Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
-import { GetProductByIdUseCase } from "@/features/catalog/app/useCases/GetProductByIdUseCase"
+import { GetProductBySlugUseCase } from "@/features/catalog/app/useCases/GetProductBySlugUseCase"
 import { ProductMapper } from "@/features/catalog/pres/mappers/ProductMappers"
 import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 import { NotFoundError } from "@/lib/errors/NotFoundError "
 
 @injectable()
-export class GetProductByIdController {
+export class GetProductBySlugController {
     constructor(
-        @inject(catalogTokens.useCases.GetProductById)
-        private getProductByIdUseCase: GetProductByIdUseCase
+        @inject(catalogTokens.useCases.GetProductBySlug)
+        private getProductBySlugUseCase: GetProductBySlugUseCase
     ) {}
 
     async handle(req: Request, res: Response): Promise<Response> {
-        const { id } = req.params
+        const { slug } = req.params
 
-        const product = await this.getProductByIdUseCase.execute(id)
+        const product = await this.getProductBySlugUseCase.execute(slug)
 
-        if(!product) {
+        if (!product) {
             throw new NotFoundError("Product not found")
         }
 

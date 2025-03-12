@@ -3,7 +3,7 @@ import express from "express"
 import {
     CreateProductController,
     DeleteProductController,
-    GetProductByIdController,
+    GetProductBySlugController,
     GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
@@ -19,8 +19,8 @@ const createProductController = container.get<CreateProductController>(
 const deleteProductController = container.get<DeleteProductController>(
     catalogTokens.controllers.DeleteProduct
 )
-const getProductByIdController = container.get<GetProductByIdController>(
-    catalogTokens.controllers.GetProductById
+const getProductBySlugController = container.get<GetProductBySlugController>(
+    catalogTokens.controllers.GetProductBySlug
 )
 const getProductsController = container.get<GetProductsController>(
     catalogTokens.controllers.GetProducts
@@ -82,8 +82,10 @@ productRouter.post(
  *         description: Invalid ID
  */
 productRouter.get(
-    "/:id",
-    asyncHandler(getProductByIdController.handle.bind(getProductByIdController))
+    "/:",
+    asyncHandler(
+        getProductBySlugController.handle.bind(getProductBySlugController)
+    )
 )
 
 // TODO: move swagger document
@@ -196,17 +198,17 @@ productRouter.get(
 
 /**
  * @swagger
- * /v1/products/{id}:
+ * /v1/products/{slug}:
  *   put:
- *     summary: Update a product by ID
+ *     summary: Update a product by slug
  *     tags: [Products]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: slug
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the product to update
+ *         description: Slug of the product to update
  *     requestBody:
  *       required: true
  *       content:
@@ -226,7 +228,7 @@ productRouter.get(
  *         description: Product not found
  */
 productRouter.put(
-    ":id",
+    ":slug",
     asyncHandler(updateProductController.handle.bind(updateProductController))
 )
 

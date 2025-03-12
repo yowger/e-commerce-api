@@ -5,13 +5,13 @@ import { ProductRepository } from "@/features/catalog/domain/repositories/Produc
 import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
 
 @injectable()
-export class GetProductByIdUseCase {
+export class GetProductBySlugUseCase {
     constructor(
         @inject(catalogTokens.repositories.Product)
         private productRepository: ProductRepository
     ) {}
 
-    async execute(id: string): Promise<Product | null> {
-        return this.productRepository.findById(id)
+    async execute(slug: string): Promise<Product | null> {
+        return this.productRepository.findBySlug(slug)
     }
 }

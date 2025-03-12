@@ -1,6 +1,7 @@
 export class Product {
     public readonly id: string | null
     public readonly name: string
+    public readonly slug: string
     public readonly description: string | null
     public readonly price: number
     public readonly categoryId: string
@@ -10,15 +11,17 @@ export class Product {
     constructor(params: {
         id?: string
         name: string
+        slug: string
         description?: string
         price: number
         categoryId: string
         createdAt?: Date
         updatedAt?: Date
     }) {
-        this.id = params.id
+        this.id = params.id ?? null
         this.name = params.name
-        this.description = params.description
+        this.slug = params.slug
+        this.description = params.description ?? null
         this.price = params.price
         this.categoryId = params.categoryId
         this.createdAt = params.createdAt ?? new Date()

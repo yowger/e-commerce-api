@@ -1,5 +1,5 @@
 export { CreateProductController } from "./CreateProductController"
 export { DeleteProductController } from "./DeleteProductController"
-export { GetProductByIdController } from "./GetProductByIdController"
+export { GetProductBySlugController } from "./GetProductBySlugController"
 export { GetProductsController } from "./GetProductsController"
 export { UpdateProductController } from "./UpdateProductController"

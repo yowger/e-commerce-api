@@ -2,7 +2,7 @@ export const controllers = {
     CreateProduct: Symbol.for("CreateProductController"),
     DeleteProduct: Symbol.for("DeleteProductController"),
     GetProducts: Symbol.for("GetProductsController"),
-    GetProductById: Symbol.for("GetProductByIdController"),
+    GetProductBySlug: Symbol.for("GetProductBySlugController"),
     UpdateProduct: Symbol.for("UpdateProductController"),
 }
 
@@ -10,7 +10,7 @@ export const useCases = {
     CreateProduct: Symbol.for("CreateProductUseCase"),
     DeleteProduct: Symbol.for("DeleteProductUseCase"),
     GetProducts: Symbol.for("GetProductsUseCase"),
-    GetProductById: Symbol.for("GetProductByIdUseCase"),
+    GetProductBySlug: Symbol.for("GetProductBySlugUseCase"),
     UpdateProduct: Symbol.for("UpdateProductUseCase"),
 }
 

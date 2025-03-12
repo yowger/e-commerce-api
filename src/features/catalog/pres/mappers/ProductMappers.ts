@@ -1,12 +1,13 @@
 import { ProductDto } from "@/features/catalog/app/dtos/productDto"
 import { Product } from "@/features/catalog/domain/entities/Product"
 
-// TODO: add 'camelcase-keys' maybe
+// TODO: refactor
 export class ProductMapper {
     static toDTO(product: Product): ProductDto {
         return {
             id: product.id,
             name: product.name,
+            slug: product.slug,
             price: product.price,
             categoryId: product.categoryId,
             description: product.description,
@@ -19,6 +20,7 @@ export class ProductMapper {
         return new Product({
             id: row.id,
             name: row.name,
+            slug: row.slug,
             price: row.price,
             categoryId: row.categoryId ?? row.category_id,
             description: row.description,
@@ -31,6 +33,7 @@ export class ProductMapper {
         return {
             id: product.id,
             name: product.name,
+            slug: product.slug,
             description: product.description ?? null,
             price: product.price,
             category_id: product.categoryId,

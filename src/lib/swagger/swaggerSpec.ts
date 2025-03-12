@@ -1,4 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc"
+import fs from "fs"
+import path from "path"
+
 // TODO: turn to json
 const options: swaggerJsdoc.Options = {
     definition: {
@@ -58,7 +61,7 @@ const options: swaggerJsdoc.Options = {
                 },
                 Category: {
                     type: "object",
-                    required: ["name", "description"],
+                    required: ["name", "slug", "description"],
                     properties: {
                         id: {
                             type: "string",
@@ -71,6 +74,11 @@ const options: swaggerJsdoc.Options = {
                             maxLength: 100,
                             description: "The name of the category",
                         },
+                        slug: {
+                            type: "string",
+                            description:
+                                "The URL-friendly identifier for the category",
+                        },
                         description: {
                             type: "string",
                             minLength: 10,
@@ -80,19 +88,19 @@ const options: swaggerJsdoc.Options = {
                         created_at: {
                             type: "string",
                             format: "date-time",
-                            description:
-                                "The timestamp when the category was created",
+                            description: "Timestamp when category was created",
                         },
                         updated_at: {
                             type: "string",
                             format: "date-time",
                             description:
-                                "The timestamp when the category was last updated",
+                                "Timestamp when category was last updated",
                         },
                     },
                     example: {
                         id: "210c57d0-e8d5-47f5-b67b-4376eb074eb3",
                         name: "Electronics",
+                        slug: "electronics",
                         description: "All electronic products",
                         created_at: "2025-03-10T08:00:00.000Z",
                         updated_at: "2025-03-10T08:00:00.000Z",
@@ -105,19 +113,16 @@ const options: swaggerJsdoc.Options = {
                             type: "integer",
                             minimum: 1,
                             default: 1,
-                            description: "The page number to retrieve",
+                            description: "Page number to retrieve",
                         },
                         pageSize: {
                             type: "integer",
                             enum: [10, 20, 30],
                             default: 10,
-                            description: "The number of items per page",
+                            description: "Number of items per page",
                         },
                     },
-                    example: {
-                        page: 1,
-                        pageSize: 10,
-                    },
+                    example: { page: 1, pageSize: 10 },
                 },
             },
         },
@@ -126,5 +131,8 @@ const options: swaggerJsdoc.Options = {
 }
 
 const swaggerSpec = swaggerJsdoc(options)
+const swaggerFilePath = path.resolve(__dirname, "swaggerSpec.json")
+
+fs.writeFileSync(swaggerFilePath, JSON.stringify(swaggerSpec, null, 2))
 
 export default swaggerSpec

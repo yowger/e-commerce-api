@@ -3,7 +3,7 @@ import { Container } from "inversify"
 import {
     CreateProductUseCase,
     DeleteProductUseCase,
-    GetProductByIdUseCase,
+    GetProductBySlugUseCase,
 } from "@/features/catalog/app/useCases"
 import { db } from "@/lib/db/connect"
 import { catalogTokens } from "@/lib/di/tokens/catalogTokens"
@@ -13,7 +13,7 @@ import { GetProductsUseCase } from "@/features/catalog/app/useCases/GetProductsU
 import {
     CreateProductController,
     DeleteProductController,
-    GetProductByIdController,
+    GetProductBySlugController,
     GetProductsController,
     UpdateProductController,
 } from "@/features/catalog/pres/controllers"
@@ -40,8 +40,8 @@ export function configureCatalogBindings(container: Container) {
         .inTransientScope()
 
     container
-        .bind<GetProductByIdUseCase>(catalogTokens.useCases.GetProductById)
-        .to(GetProductByIdUseCase)
+        .bind<GetProductBySlugUseCase>(catalogTokens.useCases.GetProductBySlug)
+        .to(GetProductBySlugUseCase)
         .inTransientScope()
 
     container
@@ -60,10 +60,10 @@ export function configureCatalogBindings(container: Container) {
         .inTransientScope()
 
     container
-        .bind<GetProductByIdController>(
-            catalogTokens.controllers.GetProductById
+        .bind<GetProductBySlugController>(
+            catalogTokens.controllers.GetProductBySlug
         )
-        .to(GetProductByIdController)
+        .to(GetProductBySlugController)
         .inTransientScope()
 
     container

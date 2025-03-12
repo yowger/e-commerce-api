@@ -1,5 +1,5 @@
 export { CreateProductUseCase } from "./CreateProductUseCase"
 export { DeleteProductUseCase } from "./DeleteProductUseCase"
-export { GetProductByIdUseCase } from "./GetProductByIdUseCase"
+export { GetProductBySlugUseCase } from "./GetProductBySlugUseCase"
 export { GetProductsUseCase } from "./GetProductsUseCase"
 export { UpdateProductUseCase } from "./UpdateProductUseCase"

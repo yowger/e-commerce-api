@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
-import { GetCategoryUseCase } from "@/features/categories/app/useCases/getProductUseCase"
+import { GetCategoryUseCase } from "@/features/categories/app/useCases/getCategoriesUseCase"
 import { categoryTokens } from "@/lib/di/tokens/categoryTokens"
 
 @injectable()

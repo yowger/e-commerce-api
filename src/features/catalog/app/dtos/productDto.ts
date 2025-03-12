@@ -1,6 +1,7 @@
 export type ProductDto = {
     id: string
     name: string
+    slug: string
     description: string
     price: number
     categoryId: string
@@ -8,11 +9,11 @@ export type ProductDto = {
     updatedAt: string
 }
 
-export interface ProductFilter  {
+export interface ProductFilter {
     name?: string
     minPrice?: number
     maxPrice?: number
-    categoryId?: string
+    slug?: string
     createdAfter?: Date
     createdBefore?: Date
 }

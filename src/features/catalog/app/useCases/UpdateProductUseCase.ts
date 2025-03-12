@@ -12,15 +12,16 @@ export class UpdateProductUseCase {
     ) {}
 
     async execute(input: UpdateProductInput): Promise<void> {
-        const product = new Product({
-            id: input.id,
-            name: input.name,
-            description: input.description,
-            price: input.price,
-            categoryId: input.categoryId,
-        })
+        // TODO
+        // const product = new Product({
+        //     id: input.id,
+        //     name: input.name,
+        //     description: input.description,
+        //     price: input.price,
+        //     categoryId: input.categoryId,
+        // })
 
-        await this.productRepository.save(product)
+        // await this.productRepository.save(product)
     }
 }
 

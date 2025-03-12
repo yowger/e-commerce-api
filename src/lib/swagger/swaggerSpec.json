@@ -1,0 +1,477 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "E-Commerce API",
+    "version": "1.0.0",
+    "description": "API documentation for E-commerce API"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "price",
+          "categoryId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated ID of the product"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "The name of the product"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 500,
+            "description": "The description of the product"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0.01,
+            "description": "The price of the product"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "The ID of the category this product belongs to"
+          }
+        },
+        "example": {
+          "name": "Smartphone",
+          "description": "A high-end smartphone with advanced features.",
+          "price": 999.99,
+          "categoryId": "210c57d0-e8d5-47f5-b67b-4376eb074eb3"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated ID of the category"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "The name of the category"
+          },
+          "slug": {
+            "type": "string",
+            "description": "The URL-friendly identifier for the category"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 500,
+            "description": "The description of the category"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when category was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when category was last updated"
+          }
+        },
+        "example": {
+          "id": "210c57d0-e8d5-47f5-b67b-4376eb074eb3",
+          "name": "Electronics",
+          "slug": "electronics",
+          "description": "All electronic products",
+          "created_at": "2025-03-10T08:00:00.000Z",
+          "updated_at": "2025-03-10T08:00:00.000Z"
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Page number to retrieve"
+          },
+          "pageSize": {
+            "type": "integer",
+            "enum": [
+              10,
+              20,
+              30
+            ],
+            "default": 10,
+            "description": "Number of items per page"
+          }
+        },
+        "example": {
+          "page": 1,
+          "pageSize": 10
+        }
+      }
+    }
+  },
+  "paths": {
+    "/v1/products": {
+      "post": {
+        "summary": "Create a new product",
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a paginated and filtered list of products",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The page number (default is 1)"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                10,
+                20,
+                30,
+                40,
+                50
+              ]
+            },
+            "required": false,
+            "description": "Number of products per page (default is 10)"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter products by name.\nThis is case-insensitive.\n"
+          },
+          {
+            "in": "query",
+            "name": "minPrice",
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Filter products by minimum price.\nThe value must be greater than or equal to 0.\n"
+          },
+          {
+            "in": "query",
+            "name": "maxPrice",
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Filter products by maximum price.\nThe value must be greater than or equal to 0.\n"
+          },
+          {
+            "in": "query",
+            "name": "categoryId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": false,
+            "description": "Filter products by category ID.\nThe value must be a valid UUID.\n"
+          },
+          {
+            "in": "query",
+            "name": "createdAfter",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Filter products created after a specific date.\nFormat: YYYY-MM-DD\n"
+          },
+          {
+            "in": "query",
+            "name": "createdBefore",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Filter products created before a specific date.\nFormat: YYYY-MM-DD\n"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated and filtered list of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "pageSize": {
+                          "type": "integer"
+                        },
+                        "totalItems": {
+                          "type": "integer"
+                        },
+                        "totalPages": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/products/{id}": {
+      "get": {
+        "summary": "Get a product by ID",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the product to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a product by ID",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the product to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+    "/v1/categories": {
+      "get": {
+        "summary": "Get all categories",
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/categories/{identifier}": {
+      "get": {
+        "summary": "Get category by ID or slug",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The category ID or slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Check the health of the API",
+        "tags": [
+          "Health"
+        ],
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

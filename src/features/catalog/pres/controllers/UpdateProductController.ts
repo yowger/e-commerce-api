@@ -19,6 +19,7 @@ export class UpdateProductController {
     ) {}
 
     async handle(req: Request, res: Response): Promise<Response> {
+        // TODO: finish
         const { id } = req.params
         const { name, description, price, categoryId } = getBody(req)
 

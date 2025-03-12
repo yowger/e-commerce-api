@@ -17,18 +17,28 @@ export class InDbProductRepository implements ProductRepository {
             .values(ProductMapper.toPersistence(product))
             .execute()
     }
-    async findById(id: string): Promise<Product | null> {
+
+    async findBySlug(slug: string): Promise<Product | null> {
         const product = await this.db
             .selectFrom("products")
+            .leftJoin("categories", "categories.id", "products.category_id")
             .selectAll()
-            .where("id", "=", id)
+            .select([
+                "categories.id as category_id",
+                "categories.name as category_name",
+            ])
+            .where("products.slug", "=", slug)
             .executeTakeFirst()
 
         if (!product) {
             return null
         }
 
-        return ProductMapper.toDomain(product)
+        return ProductMapper.toDomain({
+            ...product,
+            categoryId: product.category_id,
+            categoryName: product.category_name,
+        })
     }
 
     async findPaginated(
@@ -38,7 +48,20 @@ export class InDbProductRepository implements ProductRepository {
     ): Promise<PaginatedResult<Product[]>> {
         const offset = (page - 1) * pageSize
 
-        let query = this.db.selectFrom("products").selectAll()
+        let query = this.db
+            .selectFrom("products")
+            .leftJoin("categories", "categories.id", "products.category_id")
+            .select([
+                "products.id",
+                "products.name",
+                "products.description",
+                "products.price",
+                "products.slug",
+                "categories.id as category_id",
+                "categories.name as category_name",
+                "products.created_at",
+                "products.updated_at",
+            ])
 
         if (filter?.name) {
             query = query.where("name", "ilike", `%${filter.name}%`)
@@ -52,8 +75,8 @@ export class InDbProductRepository implements ProductRepository {
             query = query.where("price", "<=", filter.maxPrice)
         }
 
-        if (filter?.categoryId) {
-            query = query.where("category_id", "=", filter.categoryId)
+        if (filter?.slug) {
+            query = query.where("slug", "=", filter.slug)
         }
 
         if (filter?.createdAfter) {
@@ -76,10 +99,17 @@ export class InDbProductRepository implements ProductRepository {
         const totalPages = Math.ceil(totalItems / pageSize)
 
         return {
-            data: data.map(ProductMapper.toDomain),
+            data: data.map((product) =>
+                ProductMapper.toDomain({
+                    ...product,
+                    categoryId: product.category_id,
+                    categoryName: product.category_name,
+                })
+            ),
             pagination: { page, pageSize, totalItems, totalPages },
         }
     }
+
     async delete(id: string): Promise<void> {
         await this.db.deleteFrom("products").where("id", "=", id).execute()
     }
