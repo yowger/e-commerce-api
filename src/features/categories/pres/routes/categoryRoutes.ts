@@ -1,7 +1,9 @@
 import express from "express"
 
 import { GetCategoriesController } from "@/features/categories/pres/controllers/getCategoriesController"
-import { GetCategoryByIdOrSlugController } from "@/features/categories/pres/controllers/getCategoryByIdOrSlugController"
+import { GetCategoryByIdController } from "@/features/categories/pres/controllers/getCategoryByIdController"
+import { GetCategoryBySlugController } from "@/features/categories/pres/controllers/getCategoryBySlugController"
+
 import { container } from "@/lib/di/container"
 import { categoryTokens } from "@/lib/di/tokens/categoryTokens"
 import { asyncHandler } from "@/lib/http/utils/asyncHandler"
@@ -12,10 +14,13 @@ const getCategoriesController = container.get<GetCategoriesController>(
     categoryTokens.controllers.GetCategories
 )
 
-const getCategoryByIdOrSlugController =
-    container.get<GetCategoryByIdOrSlugController>(
-        categoryTokens.controllers.GetCategoryByIdOrSlug
-    )
+const getCategoryByIdController = container.get<GetCategoryByIdController>(
+    categoryTokens.controllers.GetCategoryById
+)
+
+const getCategoryBySlugController = container.get<GetCategoryBySlugController>(
+    categoryTokens.controllers.GetCategoryBySlug
+)
 
 /**
  * @swagger
@@ -42,17 +47,17 @@ categoryRouter.get(
 
 /**
  * @swagger
- * /v1/categories/{identifier}:
+ * /v1/categories/{id}:
  *   get:
- *     summary: Get category by ID or slug
+ *     summary: Get category by ID
  *     tags: [Categories]
  *     parameters:
  *       - in: path
- *         name: identifier
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The category ID or slug
+ *         description: The category ID
  *     responses:
  *       200:
  *         description: Category data
@@ -66,11 +71,41 @@ categoryRouter.get(
  *         description: Internal server error
  */
 categoryRouter.get(
-    "/:identifier",
+    "/:id",
     asyncHandler(
-        getCategoryByIdOrSlugController.handle.bind(
-            getCategoryByIdOrSlugController
-        )
+        getCategoryByIdController.handle.bind(getCategoryByIdController)
+    )
+)
+
+/**
+ * @swagger
+ * /v1/categories/slug/{slug}:
+ *   get:
+ *     summary: Get category by slug
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The category slug
+ *     responses:
+ *       200:
+ *         description: Category data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Category'
+ *       404:
+ *         description: Category not found
+ *       500:
+ *         description: Internal server error
+ */
+categoryRouter.get(
+    "/slug/:slug",
+    asyncHandler(
+        getCategoryBySlugController.handle.bind(getCategoryBySlugController)
     )
 )
 

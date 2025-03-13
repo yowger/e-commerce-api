@@ -18,7 +18,7 @@ export class CreateProductUseCase {
     ) {}
 
     async execute(input: CreateProductInput): Promise<void> {
-        const category = await this.categoryRepository.findByIdOrSlug(
+        const category = await this.categoryRepository.findById(
             input.categoryId
         )
 

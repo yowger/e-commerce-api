@@ -2,20 +2,20 @@ import { Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import { inject, injectable } from "inversify"
 
-import { GetCategoryBySlugUseCase } from "@/features/categories/app/useCases/getCategoryByIdOrSlugUseCase"
+import { GetCategoryByIdUseCase } from "@/features/categories/app/useCases/getCategoryByIdUseCase"
 import { categoryTokens } from "@/lib/di/tokens/categoryTokens"
 
 @injectable()
-export class GetCategoryByIdOrSlugController {
+export class GetCategoryByIdController {
     constructor(
-        @inject(categoryTokens.useCases.GetCategoryByIdOrSlug)
-        private getCategoryBySlugUseCase: GetCategoryBySlugUseCase
+        @inject(categoryTokens.useCases.GetCategoryById)
+        private getCategoryByIdUseCase: GetCategoryByIdUseCase
     ) {}
 
     async handle(req: Request, res: Response): Promise<Response> {
-        const { identifier } = req.params
+        const { id } = req.params
 
-        const category = await this.getCategoryBySlugUseCase.execute(identifier)
+        const category = await this.getCategoryByIdUseCase.execute(id)
 
         if (!category) {
             return res

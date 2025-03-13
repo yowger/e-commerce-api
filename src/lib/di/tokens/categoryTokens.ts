@@ -1,11 +1,13 @@
 export const controllers = {
-    GetCategories: Symbol.for("getCategoriesController"),
-    GetCategoryByIdOrSlug: Symbol.for("GetCategoryByIdOrSlugController"),
+    GetCategories: Symbol.for("GetCategoriesController"),
+    GetCategoryById: Symbol.for("GetCategoryByIdController"),
+    GetCategoryBySlug: Symbol.for("GetCategoryBySlugController"),
 }
 
 export const useCases = {
-    GetCategories: Symbol.for("getCategoriesUseCase"),
-    GetCategoryByIdOrSlug: Symbol.for("GetCategoryByIdOrSlugUseCase"),
+    GetCategories: Symbol.for("GetCategoriesUseCase"),
+    GetCategoryById: Symbol.for("GetCategoryByIdUseCase"),
+    GetCategoryBySlug: Symbol.for("GetCategoryBySlugUseCase"),
 }
 
 export const repositories = {
