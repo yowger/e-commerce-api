@@ -11,11 +11,26 @@ import type { PaginatedResult } from "@/lib/types/pagination"
 export class InDbProductRepository implements ProductRepository {
     constructor(private readonly db: Kysely<Database>) {}
 
+    // have race condition problem but will do for now for this small api
     async save(product: Product): Promise<void> {
+        const uniqueSlug = await this.generateUniqueSlug(product.slug)
+
         await this.db
             .insertInto("products")
-            .values(ProductMapper.toPersistence(product))
+            .values(
+                ProductMapper.toPersistence({ ...product, slug: uniqueSlug })
+            )
             .execute()
+    }
+
+    async generateUniqueSlug(slug: string): Promise<string> {
+        const { count } = await this.db
+            .selectFrom("products")
+            .select((eb) => eb.fn.count<number>("id").as("count"))
+            .where("slug", "like", `${slug}%`)
+            .executeTakeFirstOrThrow()
+
+        return count === 0 ? slug : `${slug}-${count}`
     }
 
     async findBySlug(slug: string): Promise<Product | null> {
@@ -109,7 +124,7 @@ export class InDbProductRepository implements ProductRepository {
             pagination: { page, pageSize, totalItems, totalPages },
         }
     }
-
+    
     async delete(id: string): Promise<void> {
         await this.db.deleteFrom("products").where("id", "=", id).execute()
     }
