@@ -41,6 +41,8 @@ export class InDbProductRepository implements ProductRepository {
             .select([
                 "categories.id as category_id",
                 "categories.name as category_name",
+                "products.name as name",
+                "products.slug as slug",
             ])
             .where("products.slug", "=", slug)
             .executeTakeFirst()
@@ -51,8 +53,10 @@ export class InDbProductRepository implements ProductRepository {
 
         return ProductMapper.toDomain({
             ...product,
-            categoryId: product.category_id,
-            categoryName: product.category_name,
+            category: {
+                id: product.category_id,
+                name: product.category_name,
+            },
         })
     }
 
@@ -124,7 +128,7 @@ export class InDbProductRepository implements ProductRepository {
             pagination: { page, pageSize, totalItems, totalPages },
         }
     }
-    
+
     async delete(id: string): Promise<void> {
         await this.db.deleteFrom("products").where("id", "=", id).execute()
     }
