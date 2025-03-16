@@ -82,7 +82,7 @@ productRouter.post(
  *         description: Invalid ID
  */
 productRouter.get(
-    "/:",
+    "/:slug",
     asyncHandler(
         getProductBySlugController.handle.bind(getProductBySlugController)
     )
@@ -228,7 +228,7 @@ productRouter.get(
  *         description: Product not found
  */
 productRouter.put(
-    ":slug",
+    "/:slug",
     asyncHandler(updateProductController.handle.bind(updateProductController))
 )
 
